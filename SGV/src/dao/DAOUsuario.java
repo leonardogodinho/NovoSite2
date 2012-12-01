@@ -70,6 +70,8 @@ public class DAOUsuario {
 		Criteria cr = sessao.createCriteria(Usuario.class)
 							.add(Restrictions.eq("idUsuario", u.getIdUsuario()));
 		u = (Usuario) cr.uniqueResult();
+		sessao.flush();
+		sessao.close();
 		if(u==null)
 			return true;
 		else

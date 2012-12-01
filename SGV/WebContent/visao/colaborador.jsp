@@ -12,7 +12,7 @@
 	   c.setEmail("");
 	   c.setSenha("");
 	   c.setTipo("");
-	   c.setStatus("");
+	   c.setQtdCandidaturas(0);
    }%>
    	<form action="http://localhost:8080/SGV/Controle" method="GET" class="formee" id="cadastroColaborador">
 		<fieldset>
@@ -66,12 +66,14 @@
 				<option value="Colaborador">Colaborador</option>
 			</select>
 			</div>
+			<!-- 
 			<div class="grid-12-12">
 			<label  class="bold">Status <em class="formee-req">*</em></label>
 			<select name="status">
 				<option value="Sem Candidatura">Sem Candidatura</option>
 			</select>
 			</div>
+			 -->
 			<div class="grid-12-12 no-margin">
 				<div>
 					<div class="grid-3-12 no-margin"><input type="submit" name="comando" value="Cadastrar"/></div>

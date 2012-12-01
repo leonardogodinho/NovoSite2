@@ -34,6 +34,9 @@ public class Candidatura {
 	
 	@Column(name="in_aprovado")
 	private String aprovado;
+	
+	@Column(name="nm_status")
+	private String status;
 
 	public int getIdCandidatura() {
 		return idCandidatura;
@@ -97,6 +100,14 @@ public class Candidatura {
 
 	public void setOp(Oportunidade op) {
 		this.op = op;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	/*public String getCpfSupervisor() {

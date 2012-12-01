@@ -58,6 +58,8 @@ public class DAOCandidatura {
 							.add(Restrictions.eq("c", c.getC()))
 							.add(Restrictions.eq("op", c.getOp()));
 		Candidatura u = (Candidatura) cr.uniqueResult();
+		sessao.flush();
+		sessao.close();
 		if (u == null)
 			return true;
 		else
@@ -70,6 +72,8 @@ public class DAOCandidatura {
 							.add(Restrictions.eq("c", c))
 							.add(Restrictions.eq("op", op));
 		Candidatura can = (Candidatura) cr.uniqueResult();
+		sessao.flush();
+		sessao.close();
 		return can;
 	}
 }

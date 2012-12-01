@@ -26,15 +26,13 @@
 			c.setIdUsuario(u.getIdUsuario());
 			DAOColaborador daoCO = new DAOColaborador();
 			c = daoCO.consultar(c);
-			if(c.getStatus().equals("Sem candidatura"))
+			Candidatura can = new DAOCandidatura().consultarCanUsuario(c,op);
+			if(can==null)
 				out.write("<li class='formee-button'><a href='http://localhost:8080/SGV/Controle?tela=TelaOportunidadeDetalhes&comando=Inscrever&id=" + op.getIdOportunidade() + "'>Inscrever-se</a></li>");
 			else
 			{
-	         	if(c.getStatus().equals("Aguardando prova")) 
+	         	if(can.getStatus().equals("Aguardando prova")) 
 	         	{
-	         		Candidatura can = new Candidatura();
-	         		can.setOp(op);
-	         		can.setC(c);
 	         		if(!(new DAOCandidatura().verificaID(can)))
 	         			out.write("<li class='formee-button'><a href='http://localhost:8080/SGV/Controle?tela=TelaOportunidadeDetalhes&comando=Prova&idOportunidade=" + op.getIdOportunidade() + "&idUsuario=" + c.getIdUsuario() + "'>Gerar Prova</a></li>");
 	         		else
@@ -43,7 +41,7 @@
          	}
          	out.write("</ul>");
 			out.write("</li>");
-		}%>
+		}%> 
 		
         <li>
         	<h2 class="align_center"><a href="#">Titulo da Vaga Cadastrada #02</a></h2>

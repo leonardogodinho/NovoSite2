@@ -97,6 +97,7 @@ $(function() {
         <ul>
         <% Usuario u; %>
 		<% u = (Usuario)session.getAttribute("user");
+		if(u==null)
 		if(u.getTipo().equals("RH"))
 		{
 			out.write("<li class='has-sub '><a href='#'><span>Cadastrar</span></a>");
@@ -108,8 +109,19 @@ $(function() {
             out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaRequisitos'><span>Requisitos</span></a></li>");
             out.write("</ul>");
            	out.write("</li>");
+           	out.write("<li class='has-sub ><a href='#'><span>Entrevista</span></a>");
+           	out.write("<ul>");
+           	out.write("<li><a href='#'><span>Agendar</span></a></li>");			
+           	out.write("</ul>");
+           	out.write("</li>");
            	out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaAprovarCandidato'><span>Administrar candidatos</span></a></li>");         
-			out.write("<li><a href='#'><span>Relatórios</span></a></li>");
+			out.write("<li class='has-sub ><a href='#'><span>Relatórios</span></a>");
+			out.write("<ul>");
+			out.write("<li><a href='#'><span>Oportunidades</span></a></li>");
+			out.write("<li><a href='#'><span>Histórico de Oportunidades</span></a></li>");
+			out.write("<li><a href='#'><span>Colaboradores em Processo</span></a></li>");
+            out.write("</ul>");
+           	out.write("</li>");
            	out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaListaOportunidade'><span>Em Aberto</span></a></li>");       
 		}
 		if(u.getTipo().equals("Colaborador"))

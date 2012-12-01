@@ -6,15 +6,16 @@ import javax.persistence.*;
 @Table(name="colaborador")
 public class Colaborador extends Usuario {
 
-	@Column(name="nm_status")
-	private String status;
+	@Column(name="nr_quantidade_candidaturas")
+	private int qtdCandidaturas;
 
-	public String getStatus() {
-		return status;
+	public int getQtdCandidaturas() {
+		return qtdCandidaturas;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setQtdCandidaturas(int qtdCandidaturas) {
+		this.qtdCandidaturas = qtdCandidaturas;
 	}
+
 	
 }

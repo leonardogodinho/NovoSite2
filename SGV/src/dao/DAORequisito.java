@@ -61,6 +61,8 @@ public class DAORequisito {
 		Criteria cr = sessao.createCriteria(Requisito.class)
 							.add(Restrictions.eq("id", r.getIdRequisito()));
 		Requisito u = (Requisito) cr.uniqueResult();
+		sessao.flush();
+		sessao.close();
 		if(u==null)
 			return true;
 		else

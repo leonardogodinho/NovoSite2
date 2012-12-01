@@ -70,6 +70,8 @@ public class DAOQuestao {
 		Criteria cr = sessao.createCriteria(Questao.class)
 							.add(Restrictions.eq("idQuestao", q.getIdQuestao()));
 		q = (Questao) cr.uniqueResult();
+		sessao.flush();
+		sessao.close();
 		if(q==null)
 			return true;
 		else

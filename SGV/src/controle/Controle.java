@@ -609,7 +609,6 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 		String email = req.getParameter("email");
 		String senha = req.getParameter("senha");
 		String tipo = req.getParameter("tipoUsuario");
-		String status = req.getParameter("status");
 		
 		String comando = req.getParameter("comando");
 		if(comando.equals("Cadastrar") || comando.equals("Alterar"))
@@ -624,7 +623,7 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 				c.setEmail(email);
 				c.setSenha(senha);
 				c.setTipo(tipo);
-				c.setStatus(status);
+				c.setQtdCandidaturas(0);
 				
 				DAOColaborador daoC = new DAOColaborador();
 				if(comando.equals("Cadastrar"))
@@ -723,8 +722,9 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 					DAOCandidatura daoC = new DAOCandidatura();
 					if(daoC.verificaID(can))
 					{
-						daoC.cadastrar(can);				
-						c.setStatus("Aguardando supervisor");
+						can.setStatus("Aguardando supervisor");
+						daoC.cadastrar(can);	
+						c.setQtdCandidaturas(c.getQtdCandidaturas() + 1);
 						daoCO.alterar(c);
 						
 						JOptionPane.showMessageDialog(null, "Inscrição realizada com sucesso!");
@@ -773,20 +773,17 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 			if(comando.equals("Aprovar"))
 			{
 				c.setSupervisorAceite("S");
-				co.setStatus("Aguardando prova");
+				c.setStatus("Aguardando prova");
 				JOptionPane.showMessageDialog(null, "Candidato aprovado para o processo seletivo!");
 			}
 			else
 			{
 				c.setSupervisorAceite("N");
-				co.setStatus("Reprovado");
+				c.setStatus("Reprovado");
 				JOptionPane.showMessageDialog(null, "Candidato reprovado para o processo seletivo!");
 			}
 			
 			daoC.alterar(c);
-			
-			DAOColaborador daoCO = new DAOColaborador();
-			daoCO.alterar(co);
 			
 			this.carregaCandidaturasAprovar(req, res);
 		}
@@ -883,7 +880,7 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 			}			
 			//JOptionPane.showMessageDialog(null, "Você teve um total de " + acertos + " acertos!");
 			
-			Colaborador c = a.getC().getC();
+			Candidatura c = a.getC();
 			if((acertosG>=3) && (acertosE>=2))
 			{
 				c.setStatus("Aguardando entrevista");
@@ -898,8 +895,8 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 			
 			try
 			{
-				DAOColaborador daoCO = new DAOColaborador();
-				daoCO.alterar(c);
+				DAOCandidatura daoC = new DAOCandidatura();
+				daoC.alterar(c);
 				
 				RequestDispatcher rd = req.getRequestDispatcher("/visao/principal.jsp");
 				rd.forward(req, res);
@@ -935,6 +932,9 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 			questoes.addAll(questoesGerais);
 			questoes.addAll(questoesEspecificas);
 			a.setQuestoes(new HashSet(questoes));
+			
+			DAOAvaliacao daoA = new DAOAvaliacao();
+			daoA.cadastrar(a);
 			
 			HttpSession sessao = req.getSession();
 			sessao.setAttribute("qGerais", questoesGerais);

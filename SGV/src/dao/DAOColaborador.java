@@ -56,6 +56,8 @@ public class DAOColaborador {
 		Criteria cr = sessao.createCriteria(Usuario.class).add(
 				Restrictions.eq("idUsuario", c.getIdUsuario()));
 		Usuario u = (Usuario) cr.uniqueResult();
+		sessao.flush();
+		sessao.close();
 		if (u == null)
 			return true;
 		else
