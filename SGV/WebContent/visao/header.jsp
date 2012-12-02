@@ -64,31 +64,7 @@ tinyMCE.init({
 <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css" />
-<script>
-$(function() {
-	$.datepicker.regional['pt'] = {
-        closeText: 'Fechar',
-        prevText: '<Anterior',
-        nextText: 'Seguinte',
-        currentText: 'Hoje',
-        monthNames: ['Janeiro', 'Fevereiro', 'Mar&ccedil;o', 'Abril', 'Maio', 'Junho',
-        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-        monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-        'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-        dayNames: ['Domingo', 'Segunda-feira', 'Ter&ccedil;a-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'S&aacute;bado'],
-        dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'S&aacute;b'],
-        dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'S&aacute;b'],
-        weekHeader: 'Sem',
-        dateFormat: 'dd/mm/yy',
-        firstDay: 0,
-        isRTL: false,
-        yearSuffix: ''
-    };
-    
-    $.datepicker.setDefaults($.datepicker.regional['pt']);
-    $( "#datepicker" ).datepicker();
-});
-</script>
+
 
     </head>
 
@@ -98,47 +74,65 @@ $(function() {
         <% Usuario u; %>
 		<% u = (Usuario)session.getAttribute("user");
 		if(u==null)
-		if(u.getTipo().equals("RH"))
 		{
-			out.write("<li class='has-sub '><a href='#'><span>Cadastrar</span></a>");
-			out.write("<ul>");
-            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaUsuarios'><span>Usuário</span></a></li>");
-            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaColaboradores'><span>Colaborador</span></a></li>");
-			out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaOportunidades'><span>Oportunidade</span></a></li>");
-            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaQuestoes'><span>Questões</span></a></li>");
-            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaRequisitos'><span>Requisitos</span></a></li>");
-            out.write("</ul>");
-           	out.write("</li>");
-           	out.write("<li class='has-sub ><a href='#'><span>Entrevista</span></a>");
-           	out.write("<ul>");
-           	out.write("<li><a href='#'><span>Agendar</span></a></li>");			
-           	out.write("</ul>");
-           	out.write("</li>");
-           	out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaAprovarCandidato'><span>Administrar candidatos</span></a></li>");         
-			out.write("<li class='has-sub ><a href='#'><span>Relatórios</span></a>");
-			out.write("<ul>");
-			out.write("<li><a href='#'><span>Oportunidades</span></a></li>");
-			out.write("<li><a href='#'><span>Histórico de Oportunidades</span></a></li>");
-			out.write("<li><a href='#'><span>Colaboradores em Processo</span></a></li>");
-            out.write("</ul>");
-           	out.write("</li>");
-           	out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaListaOportunidade'><span>Em Aberto</span></a></li>");       
+			
 		}
-		if(u.getTipo().equals("Colaborador"))
-			out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaListaOportunidade'><span>Em Aberto</span></a></li>");      
-		if(u.getTipo().equals("Supervisor"))
+		else
 		{
-			out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaAprovarCandidato'><span>Administrar candidatos</span></a></li>");         
-			out.write("<li><a href='#'><span>Relatórios</span></a></li>");           	
-		}
-		if(u.getTipo().equals("Gerente"))
-		{
-			out.write("<li class='has-sub '><a href='#'><span>Cadastrar</span></a>");
-			out.write("<ul>");
-			out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaQuestoes'><span>Questões</span></a></li>");            
-			out.write("</ul>");
-           	out.write("</li>");
-           	out.write("<li><a href='#'><span>Relatórios</span></a></li>");
+			if(u.getTipo().equals("RH"))
+			{ 
+				out.write("<li class='has-sub '><a href='#'><span>Cadastrar</span></a>");
+				out.write("<ul>");
+	            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaUsuarios'><span>Usuário</span></a></li>");
+	            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaColaboradores'><span>Colaborador</span></a></li>");
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaOportunidades'><span>Oportunidade</span></a></li>");
+	            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaQuestoes'><span>Questões</span></a></li>");
+	            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaRequisitos'><span>Requisitos</span></a></li>");
+	            out.write("</ul>");
+	           	out.write("</li>");
+	           	out.write("<li class='has-sub '><a href='#'><span>Entrevista</span></a>");
+	           	out.write("<ul>");
+	           	out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaAgendarEntrevista'><span>Agendar</span></a></li>");			
+	           	out.write("</ul>");
+	           	out.write("</li>");
+	           	out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaAprovarCandidato'><span>Administrar candidatos</span></a></li>");         
+				out.write("<li class='has-sub '><a href='#'><span>Relatórios</span></a>");
+				out.write("<ul>");
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=TelaRelatorios&nome=Oportunidades'><span>Oportunidades</span></a></li>");
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=TelaRelatorios&nome=Historico'><span>Histórico de Oportunidades</span></a></li>");
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=TelaRelatorios&nome=Colaboradores'><span>Colaboradores em Processo</span></a></li>");
+	            out.write("</ul>");
+	           	out.write("</li>");
+	           	out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaListaOportunidade'><span>Em Aberto</span></a></li>");       
+			}			
+			if(u.getTipo().equals("Colaborador"))
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaListaOportunidade'><span>Em Aberto</span></a></li>");      
+			if(u.getTipo().equals("Supervisor"))
+			{
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaAprovarCandidato'><span>Administrar candidatos</span></a></li>");         
+				out.write("<li><a href='#'><span>Relatórios</span></a></li>");           	
+			}
+			if(u.getTipo().equals("Gerente"))
+			{
+				out.write("<li class='has-sub '><a href='#'><span>Cadastrar</span></a>");
+				out.write("<ul>");
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaQuestoes'><span>Questões</span></a></li>");            
+				out.write("</ul>");
+	           	out.write("</li>");
+	           	out.write("<li class='has-sub '><a href='#'><span>Entrevista</span></a>");
+	           	out.write("<ul>");
+	           	out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaAprovarEntrevista'><span>Administrar</span></a></li>");			
+	           	out.write("</ul>");
+	           	out.write("</li>");
+	           	out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaAprovarCandidato'><span>Administrar candidatos</span></a></li>");         
+				out.write("<li class='has-sub '><a href='#'><span>Relatórios</span></a>");
+				out.write("<ul>");
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=TelaRelatorios&nome=Oportunidades'><span>Oportunidades</span></a></li>");
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaRelatorio'><span>Histórico de Oportunidades</span></a></li>");
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=TelaRelatorios&nome=Colaboradores'><span>Colaboradores em Processo</span></a></li>");
+	            out.write("</ul>");
+	           	out.write("</li>");
+			}
 		}
        %>
        </ul>
@@ -153,7 +147,10 @@ $(function() {
 		    	<%
 		    	u = (Usuario)session.getAttribute("user");
 		    	if(u==null)
-		    		out.write("<p>Bem vindo, <span class='bold'>Admin</span>!<br>");
+		    		if(session.getAttribute("userADM")!=null)
+		    			out.write("<p>Bem vindo, <span class='bold'>Admin</span>!<br>");
+		    		else
+		    			pageContext.forward("login.jsp"); 
 		    	else
 		    	{
 		    		out.write("<p>Bem vindo, <span class='bold'>" + u.getNome() + "</span>!<br>");

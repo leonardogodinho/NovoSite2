@@ -1,4 +1,4 @@
-<%@ include file="header.jsp" %>
+	<%@ include file="header.jsp" %>
 <%@page import="dao.*" %>
 
 <% ArrayList listaCandidatura; %>

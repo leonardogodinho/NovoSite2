@@ -1,11 +1,15 @@
 package dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import modelo.*;
 
 import org.hibernate.*;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.AliasToEntityMapResultTransformer;
+import org.hibernate.transform.Transformers;
 
 public class DAOCandidatura {
 	private SessionFactory fabrica;
@@ -46,6 +50,7 @@ public class DAOCandidatura {
 		Session sessao = fabrica.openSession();
 		Criteria cr = sessao.createCriteria(Candidatura.class)
 							.add(Restrictions.isNull("supervisorAceite"));
+		cr.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		ArrayList lista = (ArrayList) cr.list();
 		sessao.flush();
 		sessao.close();
@@ -75,5 +80,32 @@ public class DAOCandidatura {
 		sessao.flush();
 		sessao.close();
 		return can;
+	}
+	
+	public ArrayList consultarCandidaturasParaEntrevista() throws Exception
+	{
+		/*String sql = "select u.id_usuario as idUsuario, u.nm_usuario as nome, u.nr_cpf as cpf, " +
+					 "u.tp_usuario as tipo from usuario u, candidatura c where c.c_id_usuario = " +
+					 "u.id_usuario and c.nm_status = 'Aguardando entrevista'";
+			
+		Session sessao = fabrica.openSession();
+		SQLQuery query = sessao.createSQLQuery(sql);
+		query.addScalar("idUsuario");
+		query.addScalar("nome");
+		query.addScalar("cpf");
+		query.addScalar("tipo");
+		query.setResultTransformer(Transformers.aliasToBean(Usuario.class));
+		List lista = query.list();
+		sessao.flush();
+		sessao.close();
+		return (ArrayList)lista;*/
+		Session sessao = fabrica.openSession();
+		Criteria cr = sessao.createCriteria(Candidatura.class)
+							.add(Restrictions.eq("status", "Aguardando entrevista"));
+		cr.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		ArrayList lista = (ArrayList) cr.list();
+		sessao.flush();
+		sessao.close();
+		return lista;
 	}
 }

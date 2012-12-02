@@ -96,11 +96,28 @@
             	%>
             	
             <ul class="opt-menu">
-            	<li class="formee-button">
+            	
             	<% 
-            	out.write("<a href='http://localhost:8080/SGV/Controle?tela=TelaOportunidadeDetalhes&comando=Inscrever&id=" + o.getIdOportunidade() + "'>Inscrever-se</a>");
+            	Colaborador c = new Colaborador();
+    			c.setIdUsuario(u.getIdUsuario());
+    			DAOColaborador daoCO = new DAOColaborador();
+    			c = daoCO.consultar(c);
+    			Candidatura can = new DAOCandidatura().consultarCanUsuario(c,o);
+    			if(can==null)
+    				out.write("<li class='formee-button'><a href='http://localhost:8080/SGV/Controle?tela=TelaOportunidadeDetalhes&comando=Inscrever&id=" + o.getIdOportunidade() + "'>Inscrever-se</a></li>");
+    			else
+    			{
+    	         	if(can.getStatus().equals("Aguardando prova")) 
+    	         	{
+    	         		if(!(new DAOCandidatura().verificaID(can)))
+    	         			out.write("<li class='formee-button'><a href='http://localhost:8080/SGV/Controle?tela=TelaOportunidadeDetalhes&comando=Prova&idOportunidade=" + o.getIdOportunidade() + "&idUsuario=" + c.getIdUsuario() + "'>Gerar Prova</a></li>");
+    	         		else
+    	         			out.write("<li class='formee-button'><a href='http://localhost:8080/SGV/Controle?tela=TelaOportunidadeDetalhes&comando=Inscrever&id=" + o.getIdOportunidade() + "'>Inscrever-se</a></li>");            	
+    	            }
+             	}
+            	
             	%>
-				</li>
+				
             </ul>
 	</li>
 </div>

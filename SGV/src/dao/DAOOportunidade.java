@@ -6,9 +6,11 @@ import java.util.List;
 import modelo.ItemRequisito;
 import modelo.Itens;
 import modelo.Oportunidade;
+import modelo.RelColaborador;
 import modelo.Requisito;
 
 import org.hibernate.*;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.IntegerType;
@@ -30,6 +32,16 @@ public class DAOOportunidade {
 		Session sessao = fabrica.openSession();
 		Transaction transacao = sessao.beginTransaction();
 		sessao.save(op);
+		transacao.commit();
+		sessao.flush();
+		sessao.close();
+	}
+	
+	public void alterar(Oportunidade op) throws Exception
+	{
+		Session sessao = fabrica.openSession();
+		Transaction transacao = sessao.beginTransaction();
+		sessao.update(op);
 		transacao.commit();
 		sessao.flush();
 		sessao.close();
@@ -61,6 +73,8 @@ public class DAOOportunidade {
 		Session sessao = fabrica.openSession();
 		Criteria cr = sessao.createCriteria(Oportunidade.class)
 							.add(Restrictions.isNull("dataEncerramento"));
+	
+		cr.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		ArrayList lista = (ArrayList)cr.list();
 		sessao.flush();
 		sessao.close();
@@ -87,5 +101,42 @@ public class DAOOportunidade {
 		sessao.flush();
 		sessao.close();
 		return (ArrayList)lista;
+	}
+	
+	public ArrayList consultarRelatorioOportunidades() throws Exception
+	{
+		String sql = "select nm_oportunidade as titulo, vl_carga_horaria as cargaHoraria, " +
+					 "nm_area_atuacao as areaAtuacao, vl_salario as salario, " +
+					 "replace(replace(ds_oportunidade,'<p>',''),'</p>','') " +
+					 "as descricao from oportunidade where dt_encerramento is null or dt_encerramento > now()";
+		Session sessao = fabrica.openSession();
+		SQLQuery query = sessao.createSQLQuery(sql);
+		query.addScalar("titulo");
+		query.addScalar("cargaHoraria");
+		query.addScalar("areaAtuacao");
+		query.addScalar("salario");
+		query.addScalar("descricao");
+		query.setResultTransformer(Transformers.aliasToBean(Oportunidade.class));
+		List lista = query.list();
+		sessao.flush();
+		sessao.close();
+		return (ArrayList)lista;		
+	}
+	
+	public ArrayList consultarRelatorioPorData(String data) throws Exception
+	{
+		String sql = "select o.nm_oportunidade, u.nm_usuario from oportunidade o, " +
+					 "usuario u, candidatura c where c.op_id_oportunidade = o.id_oportunidade " +
+					 "and c.c_id_usuario = u.id_usuario and to_char(dt_encerramento,'yyyy-MM-dd') "+
+					 "< '" + data + "'";
+		Session sessao = fabrica.openSession();
+		SQLQuery query = sessao.createSQLQuery(sql);
+		query.addScalar("nm_oportunidade");
+		query.addScalar("nm_usuario");
+		query.setResultTransformer(Transformers.aliasToBean(RelColaborador.class));
+		List lista = query.list();
+		sessao.flush();
+		sessao.close();
+		return (ArrayList)lista;		
 	}
 }

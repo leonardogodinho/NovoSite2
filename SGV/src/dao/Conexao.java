@@ -22,6 +22,8 @@ public class Conexao {
 							.addAnnotatedClass(Itens.class)
 							.addAnnotatedClass(Candidatura.class)
 							.addAnnotatedClass(Avaliacao.class)
+							.addAnnotatedClass(Entrevista.class)
+							.addAnnotatedClass(RelColaborador.class)
 							.buildSessionFactory();
 	}
 	

@@ -1,10 +1,13 @@
 package dao;
 
-import modelo.Colaborador;
-import modelo.Usuario;
+import java.util.ArrayList;
+import java.util.List;
+
+import modelo.*;
 
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
 public class DAOColaborador {
 
@@ -62,6 +65,27 @@ public class DAOColaborador {
 			return true;
 		else
 			return false;
+	}
+	
+	public ArrayList consultarColaboradoresProcesso() throws Exception
+	{
+		String sql = "select u.nr_cpf, u.nm_usuario, u.nm_departamento, o.nm_oportunidade, " +
+					 "c.nm_status from usuario u, oportunidade o, candidatura c " +
+					 "where c.op_id_oportunidade = o.id_oportunidade and c.c_id_usuario = " +
+					 "u.id_usuario and c.in_aprovado is null";
+		
+		Session sessao = fabrica.openSession();
+		SQLQuery query = sessao.createSQLQuery(sql);
+		query.addScalar("nr_cpf");
+		query.addScalar("nm_usuario");
+		query.addScalar("nm_departamento");
+		query.addScalar("nm_oportunidade");
+		query.addScalar("nm_status");
+		query.setResultTransformer(Transformers.aliasToBean(RelColaborador.class));
+		List lista = query.list();
+		sessao.flush();
+		sessao.close();
+		return (ArrayList)lista;
 	}
 
 }

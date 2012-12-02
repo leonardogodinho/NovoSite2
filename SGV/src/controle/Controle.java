@@ -1,15 +1,18 @@
 package controle;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.*;
 import java.util.*;
 
+import javax.faces.context.FacesContext;
 import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import javax.swing.JOptionPane;
 
+import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import dao.*;
 
 import modelo.*;
@@ -73,6 +76,18 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 		if(tela.equals("TelaProva"))
 		{
 			this.carregaProva(req, res);
+		}
+		if(tela.equals("TelaRelatorios"))
+		{
+			this.carregaRelatorio(req, res);
+		}
+		if(tela.equals("TelaAgendarEntrevista"))
+		{
+			this.carregaTelaAgendarEntrevista(req, res);
+		}
+		if(tela.equals("TelaAprovarEntrevista"))
+		{
+			this.carregaTelaAprovarEntrevista(req, res);
 		}
 	}
 	
@@ -225,6 +240,19 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 		{
 			this.carregaCandidaturasAprovar(req, res);
 		}
+		
+		if(comando.equals("TelaAgendarEntrevista"))
+		{
+			this.carregaEntrevistasAgendar(req, res);
+		}
+		if(comando.equals("TelaAprovarEntrevista"))
+		{
+			this.carregaEntrevistasAprovar(req, res);
+		}
+		if(comando.equals("TelaRelatorio"))
+		{
+			this.carregaTelaRelatorio(req, res);
+		}
 			
 	}
 	
@@ -240,10 +268,11 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 		String areaAtuacao = req.getParameter("areaAtuacao");
 		double salario = Double.parseDouble(req.getParameter("salario"));
 		String descricao = req.getParameter("descricao");
+		
 		Date encerramento;
         try
         {
-        	encerramento = this.formataData(req.getParameter("dataEncerramento"));
+        	encerramento = this.formataData2(req.getParameter("dataEncerramento"));
         }
         catch(Exception ex)
         {   encerramento = null;	}
@@ -718,13 +747,15 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 					Candidatura can = new Candidatura();
 					can.setOp(new DAOOportunidade().consultar(op));
 					can.setC(c);
+					can.setDataInscricao(new Date());
 					
 					DAOCandidatura daoC = new DAOCandidatura();
-					if(daoC.verificaID(can))
+					if((daoC.verificaID(can)) && (c.getQtdCandidaturas() <= 3))
 					{
-						can.setStatus("Aguardando supervisor");
-						daoC.cadastrar(can);	
+						
 						c.setQtdCandidaturas(c.getQtdCandidaturas() + 1);
+						can.setStatus("Aguardando supervisor");
+						daoC.cadastrar(can);							
 						daoCO.alterar(c);
 						
 						JOptionPane.showMessageDialog(null, "Inscrição realizada com sucesso!");
@@ -733,7 +764,8 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Você já está inscrito nesta candidatura!");
+						JOptionPane.showMessageDialog(null, "Você já está inscrito nesta oportunidade, " +
+															"ou ultrapassou o limite de candidaturas permitidas!");
 						RequestDispatcher rd = req.getRequestDispatcher("/visao/principal.jsp");
 						rd.forward(req, res);
 					}
@@ -791,6 +823,143 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 		{
 			ex.printStackTrace();
 		}
+	}
+	
+	private void carregaTelaAgendarEntrevista(HttpServletRequest req,
+			HttpServletResponse res) throws ServletException, IOException
+	{
+		String comando = req.getParameter("comando");
+		if(comando.equals("Cadastrar"))
+		{
+			try
+			{
+				String idCandidatura = req.getParameter("candidatura");
+				String idGerente = req.getParameter("gerente");
+				Date data;
+		        try
+		        {
+		        	data = this.formataData2(req.getParameter("dataEntrevista"));
+		        }
+		        catch(Exception ex)
+		        {   ex.printStackTrace(); data = null;	}
+				
+				Candidatura can = new Candidatura();
+				can.setIdCandidatura(Integer.parseInt(idCandidatura));
+				DAOCandidatura daoCa = new DAOCandidatura();
+				can = daoCa.consultar(can);
+				
+				Usuario g = new Usuario();
+				g.setIdUsuario(Integer.parseInt(idGerente));
+				g = new DAOUsuario().consultar(g);
+				
+				Entrevista e = new Entrevista();
+				e.setCan(can);
+				e.setGerente(g);
+				e.setData(data);
+				
+				DAOEntrevista daoE = new DAOEntrevista();
+				if(daoE.verificaID(e))
+				{
+					daoE.cadastrar(e);	
+					can.setStatus("Entrevista marcada");
+					daoCa.alterar(can);
+					JOptionPane.showMessageDialog(null, "Entrevista marcada com sucesso!");
+					this.carregaEntrevistasAgendar(req, res);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Esta entrevista já está marcada!");
+					this.carregaEntrevistasAgendar(req, res);
+				}
+			}
+			catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		if(comando.equals("Excluir"))
+		{
+			try
+			{
+				String idCandidatura = req.getParameter("candidatura");
+				String idGerente = req.getParameter("gerente");
+				
+				Candidatura can = new Candidatura();
+				can.setIdCandidatura(Integer.parseInt(idCandidatura));
+				DAOEntrevista daoE = new DAOEntrevista();
+				Entrevista e = daoE.consultarPorCandidatura(can);
+				
+				if(e!=null)
+				{
+					JOptionPane.showMessageDialog(null, "Esta entrevista ainda não está marcada!");
+					this.carregaEntrevistasAgendar(req, res);
+				}
+				else
+				{
+					daoE.excluir(e);	
+					JOptionPane.showMessageDialog(null,"Entrevista removida com sucesso!");
+					this.carregaEntrevistasAgendar(req, res);
+				}
+			}
+			catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	private void carregaTelaAprovarEntrevista(HttpServletRequest req,
+			HttpServletResponse res) throws ServletException, IOException
+	{
+		String comando = req.getParameter("comando");
+		try
+		{
+			HttpSession sessao = req.getSession();
+			String id = req.getParameter("id");
+			Usuario u = (Usuario)sessao.getAttribute("user");
+			
+			Entrevista e = new Entrevista();
+			e.setIdEntrevista(Integer.parseInt(id));
+			
+			DAOEntrevista daoE = new DAOEntrevista();
+			e = daoE.consultar(e);
+			
+			DAOCandidatura daoC = new DAOCandidatura();
+			Candidatura c = daoC.consultar(e.getCan());
+			
+			Oportunidade op = new Oportunidade();
+			op = new DAOOportunidade().consultar(e.getCan().getOp());
+			
+			if(comando.equals("Aprovar"))
+			{
+				c.setAprovado("S");
+				c.setStatus("Aprovado");
+				op.setDataEncerramento(new Date());
+				DAOOportunidade daoO = new DAOOportunidade();
+				daoO.alterar(op);
+				JOptionPane.showMessageDialog(null, "Candidato aprovado para a oportunidade!");
+			}
+			else
+			{
+				c.setAprovado("N");
+				c.setStatus("Reprovado");
+				JOptionPane.showMessageDialog(null, "Candidato reprovado para a oportunidade!");
+			}
+			
+			daoC.alterar(c);
+			this.carregaEntrevistasAprovar(req, res);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	private void carregaTelaRelatorio(HttpServletRequest req,
+			HttpServletResponse res) throws ServletException, IOException
+	{
+		RequestDispatcher rd = req.getRequestDispatcher("/visao/relatorio.jsp");
+		rd.forward(req, res);
 	}
 	
 	private void carregaQuestoes(HttpServletRequest req,
@@ -950,13 +1119,164 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 		}	
 	}
 	
+	private void carregaEntrevistasAgendar(HttpServletRequest req,
+			HttpServletResponse res) throws ServletException, IOException
+	{
+		try
+		{
+			DAOCandidatura daoC = new DAOCandidatura();
+			DAOUsuario daoU = new DAOUsuario();
+			ArrayList listaCandidaturas = daoC.consultarCandidaturasParaEntrevista();
+			ArrayList listaGerentes = daoU.consultarGerentes();
+			
+			HttpSession sessao = req.getSession();
+			sessao.setAttribute("listaCandidaturas", listaCandidaturas);
+			sessao.setAttribute("listaGerentes", listaGerentes);
+			
+			RequestDispatcher rd = req.getRequestDispatcher("/visao/agendar-entrevista.jsp");
+			rd.forward(req, res);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}	
+	}
+	
+	private void carregaEntrevistasAprovar(HttpServletRequest req,
+			HttpServletResponse res) throws ServletException, IOException
+	{
+		try
+		{
+			HttpSession sessao = req.getSession();
+			Usuario u = (Usuario)sessao.getAttribute("user");			
+			
+			DAOEntrevista daoE = new DAOEntrevista();
+			ArrayList listaEntrevistas = daoE.consultarEntrevistasAprovar(u);
+			sessao.setAttribute("listaEntrevistas", listaEntrevistas);
+			
+			RequestDispatcher rd = req.getRequestDispatcher("/visao/administrar-entrevista.jsp");
+			rd.forward(req, res);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	private void carregaRelatorio(HttpServletRequest req,
+			HttpServletResponse res)
+	{
+		String relatorio = req.getParameter("nome");
+		if(relatorio.equals("Colaboradores"))
+		{
+			try
+			{
+				DAOColaborador daoCO = new DAOColaborador();
+				ArrayList lista = daoCO.consultarColaboradoresProcesso();
+				JRBeanCollectionDataSource jr = new JRBeanCollectionDataSource(lista);
+				
+				// preparar a lista para o relatório
+				File f = new File(this.getServletConfig()
+						.getServletContext()
+						.getRealPath("Relatorio_sem_nome_1.jasper"));
+		
+				byte[] b = JasperRunManager.runReportToPdf(f.getPath(),
+						new HashMap(), jr);
+				
+				//preencher o arquivo jasper com as informações preparadas JR
+				//transformar num PDF, depois transformar o pdf num vetor de bytes
+				
+				ServletOutputStream out = res.getOutputStream();
+				res.setContentType("application/pdf");
+				res.setContentLength(b.length);
+				out.write(b, 0, b.length);
+				out.flush();
+				out.close();
+			}
+			catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		if(relatorio.equals("Oportunidades"))
+		{
+			try
+			{
+				DAOOportunidade daoO = new DAOOportunidade();
+				ArrayList lista = daoO.consultarRelatorioOportunidades();
+				JRBeanCollectionDataSource jr = new JRBeanCollectionDataSource(lista);
+			
+				File f = new File(this.getServletConfig()
+						.getServletContext()
+						.getRealPath("Relatorio_sem_nome_2.jasper"));
+				byte[] b = JasperRunManager.runReportToPdf(f.getPath(),
+						new HashMap(), jr);
+				
+				//preencher o arquivo jasper com as informações preparadas JR
+				//transformar num PDF, depois transformar o pdf num vetor de bytes
+				
+				ServletOutputStream out = res.getOutputStream();
+				res.setContentType("application/pdf");
+				res.setContentLength(b.length);
+				out.write(b, 0, b.length);
+				out.flush();
+				out.close();
+			}
+			catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		if(relatorio.equals("Gerar Relatorio"))
+		{
+			String data = req.getParameter("data");
+			try
+			{
+				DAOOportunidade daoO = new DAOOportunidade();
+				ArrayList lista = daoO.consultarRelatorioPorData(data);
+				JRBeanCollectionDataSource jr = new JRBeanCollectionDataSource(lista);
+				
+				File f = new File(this.getServletConfig()
+						.getServletContext()
+						.getRealPath("Relatorio_sem_nome_3.jasper"));
+				byte[] b = JasperRunManager.runReportToPdf(f.getPath(),
+						new HashMap(), jr);
+				
+				//preencher o arquivo jasper com as informações preparadas JR
+				//transformar num PDF, depois transformar o pdf num vetor de bytes
+				
+				ServletOutputStream out = res.getOutputStream();
+				res.setContentType("application/pdf");
+				res.setContentLength(b.length);
+				out.write(b, 0, b.length);
+				out.flush();
+				out.close();
+			}
+			catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	public Date formataData2(String data) throws Exception {   
+                  
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = (Date)formatter.parse(data);
+
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		String mydate = dateFormat.format(date);
+		
+		return this.formataData(mydate);
+    }
+	
 	public Date formataData(String data) throws Exception {   
         if (data == null || data.equals(""))  
             return null;  
           
         Date date = null;  
         try {  
-            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
             date = (java.util.Date)formatter.parse(data);  
         } catch (ParseException e) {              
             throw e;  

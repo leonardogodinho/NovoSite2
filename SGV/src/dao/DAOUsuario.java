@@ -1,8 +1,12 @@
 package dao;
 
+import java.util.ArrayList;
+
+import modelo.Oportunidade;
 import modelo.Usuario;
 
 import org.hibernate.*;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Restrictions;
 
 public class DAOUsuario {
@@ -76,6 +80,18 @@ public class DAOUsuario {
 			return true;
 		else
 			return false;	
+	}
+	
+	public ArrayList consultarGerentes() throws Exception
+	{
+		Session sessao = fabrica.openSession();
+		Criteria cr = sessao.createCriteria(Usuario.class)
+							.add(Restrictions.eq("tipo", "Gerente"));
+		cr.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		ArrayList lista = (ArrayList)cr.list();
+		sessao.flush();
+		sessao.close();
+		return lista;
 	}
 	
 }

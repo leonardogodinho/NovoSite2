@@ -88,8 +88,8 @@
         </div>
 		
         <div class="grid-3-12">
-        	<label for="dataEncerramento" class="bold">Data de Encerramento</label>
-            <input type="text" id="datepicker" name="dataEncerramento" value="<%=o.getDataEncerramento() %>"  />
+        		<label   for="data" class="bold">Data de Encerramento </label>
+            	<input type="date" name="dataEncerramento" placeholder="dd/mm/yyyy" value="<%=o.getDataEncerramento() %>" maxlength="10" title="Informe a data Corretamente">			
         </div>
 		
 	</fieldset>
@@ -113,21 +113,21 @@
 			<input type="submit" name="comando" value="Adicionar" />
 			<input type="submit" name="comando" value="Remover" />
 			<br><br>
-			<table style="border: 1px solid;">
-				<tr>
-					<td></td>
-				</tr>
-				<tr>					
-					<% for(Object o:itens)
-				   {
-						ItemRequisito i = (ItemRequisito)o;
-						out.write("<tr>");
-						out.write("<td>" + i.getR().getNome() + "    " + i.getQuantidade() + "</td>");
-						out.write("</tr>");
-				   }	
-					%>
-				</tr>
+			<table class="grid-12-12" id="table-req">
+				<tbody class="grid-12-12">
+		        <% for(Object o:itens)
+				{
+		        	out.write("<tr class='grid-12-12'>");
+		        	ItemRequisito i = (ItemRequisito)o;
+		        	out.write("<td class='grid-1-12'><div><p>" + i.getR().getNome() + "</p></div></td>");
+		        	out.write("<td class='grid-10-12'><div><p>" + i.getQuantidade() + "</p></div></td>");
+		        	out.write("</tr>");
+				}
+		        %>                            
+		
+		        </tbody>
 			</table>
+			
 	</fieldset>
 	<div id="botoes">
 			<input type="submit" name="comando" value="Cadastrar"/>
