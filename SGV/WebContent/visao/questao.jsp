@@ -15,6 +15,7 @@
 	   q.setRespCerta("");
 	   q.setStatus("");
 	   q.setTipo("");
+	   q.setAreaAtuacao("");
    }
 %>
 
@@ -24,6 +25,24 @@
    if(listaQuestoes == null)
 	   listaQuestoes = new ArrayList();
 %>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+  // bind it
+  $("#tipo-questao").change(function() {
+    if ($(this).val() == "E") {
+        $("#area-atuacao").show();
+    }
+    else
+    {
+    	$("#area-atuacao").hide();
+    } 
+	});
+});
+
+</script>
 
 <form action="http://localhost:8080/SGV/Controle" class="formee" method="get">
 	<fieldset>
@@ -50,6 +69,7 @@
 						else
 						{
 							out.write("<option value='G' " + aux2 + ">Geral</option>");
+							out.write("<option value='E' " + aux3 + ">Especifica</option>");
 						}
 					%>
 				</select>
@@ -67,7 +87,7 @@
 						out.write("<option value='C' id='inativo' " + aux1 + ">Desabilitada</option>");								
 					%>
                 </select>
-            </div>
+            </div> 
             <div class="grid-12-12">
             	<label for="alternativa-a" class="bold">Alternativa A</label>
                 <input type="text" class="no-margin" name="respostaA" id="alternativa-a" value='<%=q.getRespostaA() %>'>
@@ -96,7 +116,29 @@
                     <option value="D" id="resp-d"></option>
                 </datalist>
             </div>
-            <div class="grid-6-12"></div>
+            <div class="grid-6-12" id="area-atuacao" style="display: none;">
+            	<label class="bold">Área de atuação</label>
+            	<select class="no-margin" name="areaAtuacao">
+                	<%
+						String aux4 = "", aux5 = "", aux6 = "", aux7 = "", aux8 = "";
+						if(q.getAreaAtuacao().equals("Administrativo"))
+							aux = "selected";
+						if(q.getAreaAtuacao().equals("Comercial"))
+							aux1 = "selected";
+						if(q.getAreaAtuacao().equals("Finanças"))
+							aux2 = "selected";
+						if(q.getAreaAtuacao().equals("TI"))
+							aux3 = "selected";
+						if(q.getAreaAtuacao().equals("Vendas"))
+							aux4 = "selected";
+						out.write("<option value='Administrativo' id='area-opt1' " + aux4 + ">Administrativo</option>");
+						out.write("<option value='Comercial' id='area-opt2' " + aux5 + ">Comercial</option>");
+						out.write("<option value='Finanças' id='area-opt3' " + aux6 + ">Finanças</option>");
+						out.write("<option value='TI' id='area-opt4' " + aux7 + ">TI</option>");
+						out.write("<option value='Vendas' id='area-opt5' " + aux8 + ">Vendas</option>");
+                	%>
+                </select>
+            </div>
             <div class="grid-4-12">
             	<input type="hidden" name="tela" value="TelaQuestao" />
 

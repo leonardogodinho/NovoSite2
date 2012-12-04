@@ -469,6 +469,7 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 			String respCerta = req.getParameter("respCerta");
 			String status = req.getParameter("status");
 			String tipo = req.getParameter("tipo-questao");
+			String areaAtuacao = req.getParameter("areaAtuacao");
 			
 			Questao q = new Questao();
 			
@@ -481,6 +482,7 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 			q.setRespCerta(respCerta);
 			q.setStatus(status);
 			q.setTipo(tipo);
+			q.setAreaAtuacao(areaAtuacao);
 			try
 			{
 				DAOQuestao daoQ = new DAOQuestao();
@@ -1096,7 +1098,7 @@ public class Controle extends javax.servlet.http.HttpServlet implements
 			
 			DAOQuestao daoQ = new DAOQuestao();
 			ArrayList questoesGerais = daoQ.consultarGerais();
-			ArrayList questoesEspecificas = daoQ.consultarEspecificas();
+			ArrayList questoesEspecificas = daoQ.consultarEspecificas(ca.getOp().getAreaAtuacao());
 			ArrayList questoes = new ArrayList();
 			questoes.addAll(questoesGerais);
 			questoes.addAll(questoesEspecificas);

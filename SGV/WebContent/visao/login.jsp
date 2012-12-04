@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-    <meta charset=utf-8>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">  
     <title>Login | Sistema de Gerenciamento de Vagas</title>
     
     <script src="<%=request.getContextPath() %>/visao/js/52/modernizr-1.1.min.js"></script><!-- this is the javascript allowing html5 to run in older browsers -->

@@ -92,12 +92,13 @@ public class DAOQuestao {
 		return lista;
 	}
 	
-	public ArrayList consultarEspecificas() throws Exception
+	public ArrayList consultarEspecificas(String areaAtuacao) throws Exception
 	{
 		Session sessao = fabrica.openSession();
 		Criteria cr = sessao.createCriteria(Questao.class)
 							.add(Restrictions.eq("status", "A"))
 							.add(Restrictions.eq("tipo", "E"))
+							.add(Restrictions.eq("areaAtuacao", areaAtuacao))
 							.add(Restrictions.sqlRestriction("1=1 order by random()"));
 		cr.setMaxResults(3);
 		ArrayList lista = (ArrayList) cr.list();

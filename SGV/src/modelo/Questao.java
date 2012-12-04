@@ -31,8 +31,7 @@ public class Questao {
 	private String respostaC;
 	
 	@Column(name = "ds_respostaD")
-	private String respostaD;
-	
+	private String respostaD;	
 	
 	@Column(name = "in_respCerta")
 	private String respCerta;
@@ -42,6 +41,9 @@ public class Questao {
 
 	@Column(name = "in_tipo")
 	private String tipo;
+	
+	@Column(name = "nm_area_atuacao")
+	private String areaAtuacao;
 
 	public String getEnunciado() {
 		return enunciado;
@@ -105,6 +107,14 @@ public class Questao {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getAreaAtuacao() {
+		return areaAtuacao;
+	}
+
+	public void setAreaAtuacao(String areaAtuacao) {
+		this.areaAtuacao = areaAtuacao;
 	}	
 	
 }

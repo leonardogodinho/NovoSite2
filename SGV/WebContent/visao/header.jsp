@@ -1,12 +1,12 @@
 
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html;charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" %>
 <%@page import="modelo.*,java.util.*,dao.*" %>
     
 <!DOCTYPE HTML>
 <html>
     <head>
-    <meta charset=utf-8>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">  
     <title>Login | Sistema de Gerenciamento de Vagas</title>
     
     <script src="<%=request.getContextPath() %>/visao/js/52/modernizr-1.1.min.js"></script><!-- this is the javascript allowing html5 to run in older browsers -->
@@ -63,6 +63,7 @@ tinyMCE.init({
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
 <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+<script src="<%=request.getContextPath() %>/visao/js/jquery-latest.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css" />
 
 
@@ -83,10 +84,10 @@ tinyMCE.init({
 			{ 
 				out.write("<li class='has-sub '><a href='#'><span>Cadastrar</span></a>");
 				out.write("<ul>");
-	            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaUsuarios'><span>Usu√°rio</span></a></li>");
+	            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaUsuarios'><span>Usu·rio</span></a></li>");
 	            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaColaboradores'><span>Colaborador</span></a></li>");
 				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaOportunidades'><span>Oportunidade</span></a></li>");
-	            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaQuestoes'><span>Quest√µes</span></a></li>");
+	            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaQuestoes'><span>Questıes</span></a></li>");
 	            out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaRequisitos'><span>Requisitos</span></a></li>");
 	            out.write("</ul>");
 	           	out.write("</li>");
@@ -96,10 +97,10 @@ tinyMCE.init({
 	           	out.write("</ul>");
 	           	out.write("</li>");
 	           	out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaAprovarCandidato'><span>Administrar candidatos</span></a></li>");         
-				out.write("<li class='has-sub '><a href='#'><span>Relat√≥rios</span></a>");
+				out.write("<li class='has-sub '><a href='#'><span>RelatÛrios</span></a>");
 				out.write("<ul>");
 				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=TelaRelatorios&nome=Oportunidades'><span>Oportunidades</span></a></li>");
-				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=TelaRelatorios&nome=Historico'><span>Hist√≥rico de Oportunidades</span></a></li>");
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaRelatorio'><span>HistÛrico de Oportunidades</span></a></li>");
 				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=TelaRelatorios&nome=Colaboradores'><span>Colaboradores em Processo</span></a></li>");
 	            out.write("</ul>");
 	           	out.write("</li>");
@@ -110,13 +111,13 @@ tinyMCE.init({
 			if(u.getTipo().equals("Supervisor"))
 			{
 				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaAprovarCandidato'><span>Administrar candidatos</span></a></li>");         
-				out.write("<li><a href='#'><span>Relat√≥rios</span></a></li>");           	
+				out.write("<li><a href='#'><span>RelatÛrios</span></a></li>");           	
 			}
 			if(u.getTipo().equals("Gerente"))
 			{
 				out.write("<li class='has-sub '><a href='#'><span>Cadastrar</span></a>");
 				out.write("<ul>");
-				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaQuestoes'><span>Quest√µes</span></a></li>");            
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaQuestoes'><span>Questıes</span></a></li>");            
 				out.write("</ul>");
 	           	out.write("</li>");
 	           	out.write("<li class='has-sub '><a href='#'><span>Entrevista</span></a>");
@@ -124,11 +125,10 @@ tinyMCE.init({
 	           	out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaAprovarEntrevista'><span>Administrar</span></a></li>");			
 	           	out.write("</ul>");
 	           	out.write("</li>");
-	           	out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaAprovarCandidato'><span>Administrar candidatos</span></a></li>");         
-				out.write("<li class='has-sub '><a href='#'><span>Relat√≥rios</span></a>");
+	           	out.write("<li class='has-sub '><a href='#'><span>RelatÛrios</span></a>");
 				out.write("<ul>");
 				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=TelaRelatorios&nome=Oportunidades'><span>Oportunidades</span></a></li>");
-				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaRelatorio'><span>Hist√≥rico de Oportunidades</span></a></li>");
+				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=principal&comando=TelaRelatorio'><span>HistÛrico de Oportunidades</span></a></li>");
 				out.write("<li><a href='http://localhost:8080/SGV/Controle?tela=TelaRelatorios&nome=Colaboradores'><span>Colaboradores em Processo</span></a></li>");
 	            out.write("</ul>");
 	           	out.write("</li>");
@@ -154,7 +154,7 @@ tinyMCE.init({
 		    	else
 		    	{
 		    		out.write("<p>Bem vindo, <span class='bold'>" + u.getNome() + "</span>!<br>");
-		    		out.write("Seu n√≠vel de acesso √© <span class='bold'>" + u.getTipo() + "</span>.</p>");
+		    		out.write("Seu nÌvel de acesso È <span class='bold'>" + u.getTipo() + "</span>.</p>");
 		    	}
 				%>				
 				<p class="left">
