@@ -60,9 +60,6 @@ tinyMCE.init({
 });
 </script>
 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <script src="<%=request.getContextPath() %>/visao/js/jquery-latest.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css" />
 
@@ -162,7 +159,7 @@ tinyMCE.init({
 				</p>            
 	        </div>
         </div>
-    	<div class="logo float_right"><img src="<%=request.getContextPath() %>/visao/images/svg-logo300.png" alt="Sistema de Gerenciamento de Vagas"></div>
+    	<div class="logoint float_right"><img src="<%=request.getContextPath() %>/visao/images/svg-logo300.png" alt="Sistema de Gerenciamento de Vagas"></div>
         
         <div class="clear"></div><!-- clear -->
     </header>

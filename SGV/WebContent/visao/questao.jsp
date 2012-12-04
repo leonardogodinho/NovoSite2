@@ -152,8 +152,9 @@ $(document).ready(function(){
         <thead class="grid-12-12">
             <tr class="grid-12-12">
                 <th class="grid-1-12">ID</th>
-                <th class="grid-10-12">Titulo</th>
+                <th class="grid-8-12">Titulo</th>
                 <th class="grid-1-12">Status</th>
+                <th class="grid-2-12">Acao</th>
             </tr>
         </thead>
         <tbody class="grid-12-12">
@@ -162,14 +163,14 @@ $(document).ready(function(){
 						out.write("<tr class='grid-12-12'>");
 						Questao q = (Questao)o;
 						out.write("<td class='grid-1-12'><div><p>" + q.getIdQuestao() + "</p></div></td>");
-						out.write("<td class='grid-10-12'><div><p>" + q.getEnunciado() + "</p></div></td>");
-						out.write("<td class='grid-1-12'>" + q.getStatus() + "</td>");
+						out.write("<td class='grid-8-12'><div><p>" + q.getEnunciado() + "</p></div></td>");
+						out.write("<td class='grid-1-12'><div><p>" + q.getStatus() + "</p></div></td>");
 						request.setAttribute("questaoEditar",q);
-
+						out.write("<td class='grid-2-12 acao'>");
 						out.write("<input type='hidden' name='tela' value='TelaQuestao' />");
-						out.write("<td><a href='http://localhost:8080/SGV/Controle?tela=TelaQuestao&comando=Editar&id=" + q.getIdQuestao() + "' />Editar</a></td>");
-						out.write("<td><a href='http://localhost:8080/SGV/Controle?tela=TelaQuestao&comando=Excluir&id=" + q.getIdQuestao() + "' />Excluir</a></td>");
-						out.write("</tr>");
+						out.write("<a href='http://localhost:8080/SGV/Controle?tela=TelaQuestao&comando=Editar&id=" + q.getIdQuestao() + "' /><img src='http://localhost:8080/SGV/visao/images/edit.png' alt'Editar'></a>");
+						out.write("<a href='http://localhost:8080/SGV/Controle?tela=TelaQuestao&comando=Excluir&id=" + q.getIdQuestao() + "' /><img src='http://localhost:8080/SGV/visao/images/remove.png' alt'Remover'></a>");
+						out.write("</td>");
 						
 				   }	
 					%>

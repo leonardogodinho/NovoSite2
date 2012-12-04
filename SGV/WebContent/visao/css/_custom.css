@@ -18,16 +18,10 @@ a, a:hover { text-decoration: none; }
 }
 
 header .logo {
+    bottom: 55px;
     left: 27%;
     position: relative;
 }
-
-header .logoint {
-    bottom: 55px;
-	left: 27%;
-    position: relative;
-}
-
 
 #passw { margin: 22px 50%; }
 
@@ -168,7 +162,6 @@ nav .has-sub ul li a {
   line-height: 120%;
   padding: 10px;
   font-weight: lighter;
-  margin-left: -9%;
 }
 nav .has-sub ul li:hover a {
   background: #093B64;
@@ -275,8 +268,6 @@ td p { text-align: center; }
 
 td.acao { margin-left: 5%; }
 
-td.acao img { margin: 0 5%; }
-
 td.acao div {
 	float: left;
 }
@@ -316,4 +307,6 @@ td.acao div.remover {
 	border: 1px solid red;
 }
 
-#styled { margin-left: 15%; }
+input[type="submit"] {
+	border: 1px solid red;
+}

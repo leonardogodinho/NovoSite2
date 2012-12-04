@@ -47,7 +47,8 @@
         <thead class="grid-12-12">
             <tr class="grid-12-12">
                 <th class="grid-1-12">ID</th>
-                <th class="grid-10-12">Titulo</th>
+                <th class="grid-9-12">Titulo</th>
+                <th class="grid-2-12">Acao</th>
             </tr>
         </thead>
         <tbody class="grid-12-12">
@@ -56,10 +57,12 @@
         	out.write("<tr class='grid-12-12'>");
         	Requisito r = (Requisito)o;
         	out.write("<td class='grid-1-12'><div><p>" + r.getIdRequisito() + "</p></div></td>");
-        	out.write("<td class='grid-10-12'><div><p>" + r.getNome() + "</p></div></td>");
+        	out.write("<td class='grid-9-12'><div><p>" + r.getNome() + "</p></div></td>");
+        	out.write("<td class='grid-2-12 acao'");
         	out.write("<input type='hidden' name='tela' value='TelaRequisito' />");
-			out.write("<td><a href='http://localhost:8080/SGV/Controle?tela=TelaRequisito&comando=Editar&id=" + r.getIdRequisito() + "' />Editar</a></td>");
-			out.write("<td><a href='http://localhost:8080/SGV/Controle?tela=TelaRequisito&comando=Excluir&id=" + r.getIdRequisito() + "' />Excluir</a></td>");
+			out.write("<a href='http://localhost:8080/SGV/Controle?tela=TelaRequisito&comando=Editar&id=" + r.getIdRequisito() + "' /><img src='http://localhost:8080/SGV/visao/images/edit.png' alt'Editar'></a>");
+			out.write("<a href='http://localhost:8080/SGV/Controle?tela=TelaRequisito&comando=Excluir&id=" + r.getIdRequisito() + "' /><img src='http://localhost:8080/SGV/visao/images/remove.png' alt='Excluir'></a>");
+			out.write("</td>");
 			out.write("</tr>");
 		}
         %>                            

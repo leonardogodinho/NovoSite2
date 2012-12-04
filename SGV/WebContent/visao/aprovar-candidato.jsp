@@ -28,9 +28,9 @@
 		
 		out.write("<td class='grid-2-12'><div><p>" + ca.getOp().getTitulo() + "</p></div></td>");
 		out.write("<td class='grid-8-12'><div><p>" + c.getNome() + "</p></div></td>");
-		out.write("<td class='grid-8-12'>");
-		out.write("<div class='adicionar'><a href='http://localhost:8080/SGV/Controle?tela=TelaAprovarCandidato&comando=Aprovar&id=" + ca.getIdCandidatura() + "'><img src='" + request.getContextPath() + "/visao/images/approve.png' alt='Aprovar Candidatura' ></a></div>");
-		out.write("<div class='remover'><a href='http://localhost:8080/SGV/Controle?tela=TelaAprovarCandidato&comando=Reprovar&id=" + ca.getIdCandidatura() + "'><img src='" + request.getContextPath() + "/visao/images/disapprove.png' alt='Reprovar Candidatura' ></a></div>");		
+		out.write("<td class='grid-2-12 acao'>");
+		out.write("<a href='http://localhost:8080/SGV/Controle?tela=TelaAprovarCandidato&comando=Aprovar&id=" + ca.getIdCandidatura() + "'><img src='" + request.getContextPath() + "/visao/images/approve.png' alt='Aprovar Candidatura' ></a>");
+		out.write("<a href='http://localhost:8080/SGV/Controle?tela=TelaAprovarCandidato&comando=Reprovar&id=" + ca.getIdCandidatura() + "'><img src='" + request.getContextPath() + "/visao/images/disapprove.png' alt='Reprovar Candidatura' ></a>");		
 		out.write("</td>");
 	}
 	%>

@@ -32,4 +32,9 @@
         	}
 		}
 	%>
+	 </tr>                            
+        </tbody>
+    </table>
+</div>
+	
 <%@ include file="footer.jsp" %>
